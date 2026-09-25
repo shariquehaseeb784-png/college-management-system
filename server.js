@@ -8,6 +8,12 @@ const studentRoutes=require("./routes/studentRoutes");
 const attendanceRoutes=require("./routes/attendanceRoutes");
 const marksRoutes=require("./routes/marksRoutes");
 const studentPortalRoutes=require("./routes/studentPortalRoutes");
+const facultyRoutes=require("./routes/facultyRoutes");
+const departmentRoutes=require("./routes/departmentRoutes");
+const subjectRoutes=require("./routes/subjectRoutes");
+const feeRoutes=require("./routes/feeRoutes");
+const noticeRoutes=require("./routes/noticeRoutes");
+const timetableRoutes=require("./routes/timetableRoutes");
 const seedAdmin=require("./scripts/seedAdmin");
 
 const app=express();
@@ -22,6 +28,12 @@ app.use("/api/students",studentRoutes);
 app.use("/api/attendance",attendanceRoutes);
 app.use("/api/marks",marksRoutes);
 app.use("/api/student-portal",studentPortalRoutes);
+app.use("/api/faculty",facultyRoutes);
+app.use("/api/departments",departmentRoutes);
+app.use("/api/subjects",subjectRoutes);
+app.use("/api/fees",feeRoutes);
+app.use("/api/notices",noticeRoutes);
+app.use("/api/timetable",timetableRoutes);
 
 mongoose.connect(process.env.MONGODB_URI).then(async()=>{
  await seedAdmin();
