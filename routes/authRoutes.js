@@ -16,8 +16,27 @@ router.post("/login", async (req, res) => {
             if (!email || !rollNumber) return res.status(400).json({ message: "Registered Gmail and roll number are required" });
             const student = await Student.findOne({ email, rollNumber });
             if (!student) return res.status(401).json({ message: "Invalid registered Gmail or roll number" });
-            const user = await User.findOne({ student: student._id, role: "student" });
-            if (!user) return res.status(401).json({ message: "Student login account not found. Ask admin to add the student." });
+            let user = await User.findOne({ student: student._id, role: "student" });
+
+            // Older students may have been created before student User accounts were added.
+            // Create/link the login account automatically so they can still use Gmail + roll number.
+            if (!user) {
+                user = await User.findOne({ email, role: "student" });
+                if (user) {
+                    user.student = student._id;
+                    user.name = student.name;
+                    await user.save();
+                } else {
+                    user = await User.create({
+                        name: student.name,
+                        email: student.email,
+                        passwordHash: await bcrypt.hash(rollNumber, 10),
+                        role: "student",
+                        student: student._id
+                    });
+                }
+            }
+
             const token = jwt.sign({ id: user._id.toString(), role: "student", studentId: student._id.toString() }, JWT_SECRET, { expiresIn: "8h" });
             return res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: "student", studentId: student._id } });
         }
