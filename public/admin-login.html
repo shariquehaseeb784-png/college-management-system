@@ -13,9 +13,9 @@
     <h2>Admin Login</h2>
     <p class="muted">Sign in to manage the entire college system.</p>
     <label>Email</label>
-    <input id="email" type="email" placeholder="shariquehaseeb784@gmail.com" required autocomplete="username">
+    <input id="email" type="email" placeholder="Enter admin email" autocomplete="off" required autocomplete="username">
     <label>Password</label>
-    <input id="password" type="password" placeholder="Enter password" required autocomplete="current-password">
+    <div class="password-wrap"><input id="password" type="password" placeholder="Enter password" required autocomplete="current-password"><button type="button" id="togglePassword" class="show-password">👁️ Show</button></div>
     <button type="submit">🔐 Login as Admin</button>
     <p id="error" class="error"></p>
     <a href="login.html" class="student-link">Student Login →</a>
