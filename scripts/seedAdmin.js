@@ -4,8 +4,9 @@ require("dotenv").config();
 const User=require("../models/User");
 
 async function seedAdmin(){
-  const email=(process.env.ADMIN_EMAIL||"admin@college.com").trim().toLowerCase();
-  const password=process.env.ADMIN_PASSWORD||"Admin@12345";
+  const email=(process.env.ADMIN_EMAIL||"").trim().toLowerCase();
+  const password=process.env.ADMIN_PASSWORD||"";
+  if(!email || !password) throw new Error("ADMIN_EMAIL and ADMIN_PASSWORD must be set in the deployment environment");
   const name=process.env.ADMIN_NAME||"College Admin";
 
   if(!process.env.MONGODB_URI) throw new Error("MONGODB_URI is required");
