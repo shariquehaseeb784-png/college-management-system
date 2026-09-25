@@ -3,22 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Admin Login | College Management System</title>
+<title>Admin Login | Qazi Institute</title>
 <link rel="stylesheet" href="admin-login.css">
 </head>
 <body>
 <div class="login-shell">
-  <div class="brand"><div class="logo">🎓</div><h1>College Admin</h1><p>Management Portal</p></div>
+  <div class="brand"><div class="logo" aria-label="Qazi Institute logo">🎓</div></div>
   <form id="adminLoginForm" class="card">
-    <h2>Admin Login</h2>
-    <p class="muted">Sign in to manage the entire college system.</p>
-    <label>Email</label>
-    <input id="email" type="email" placeholder="Enter admin email" autocomplete="off" required autocomplete="username">
-    <label>Password</label>
-    <div class="password-wrap"><input id="password" type="password" placeholder="Enter password" required autocomplete="current-password"><button type="button" id="togglePassword" class="show-password">👁️ Show</button></div>
-    <button type="submit">🔐 Login as Admin</button>
+    <div class="form-heading">
+      <span class="eyebrow">QAZI INSTITUTE</span>
+      <h1>Admin Login</h1>
+      <p>Secure access to the college management system.</p>
+    </div>
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="Enter admin email" autocomplete="username" required>
+    <label for="password">Password</label>
+    <div class="password-wrap">
+      <input id="password" type="password" placeholder="Enter password" autocomplete="current-password" required>
+      <label class="show-password"><input type="checkbox" id="togglePassword"> <span>Show password</span></label>
+    </div>
+    <button class="login-btn" type="submit"><span>🔐</span> Login as Admin</button>
     <p id="error" class="error"></p>
-    <a href="login.html" class="student-link">Student Login →</a>
+    <a href="login.html" class="student-link">Student Login <span>→</span></a>
   </form>
 </div>
 <script src="admin-login.js"></script>
