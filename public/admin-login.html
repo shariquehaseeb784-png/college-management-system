@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin Login | College Management System</title>
+<link rel="stylesheet" href="admin-login.css">
+</head>
+<body>
+<div class="login-shell">
+  <div class="brand"><div class="logo">🎓</div><h1>College Admin</h1><p>Management Portal</p></div>
+  <form id="adminLoginForm" class="card">
+    <h2>Admin Login</h2>
+    <p class="muted">Sign in to manage the entire college system.</p>
+    <label>Email</label>
+    <input id="email" type="email" placeholder="admin@college.com" required autocomplete="username">
+    <label>Password</label>
+    <input id="password" type="password" placeholder="Enter password" required autocomplete="current-password">
+    <button type="submit">🔐 Login as Admin</button>
+    <p id="error" class="error"></p>
+    <a href="login.html" class="student-link">Student Login →</a>
+  </form>
+</div>
+<script src="admin-login.js"></script>
+</body>
+</html>
