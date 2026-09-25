@@ -1,0 +1,3 @@
+const mongoose=require("mongoose");
+const schema=new mongoose.Schema({title:{type:String,required:true},message:{type:String,required:true},audience:{type:String,enum:["All","Students","Faculty"],default:"All"},publishDate:{type:String,default:()=>new Date().toISOString().slice(0,10)},expiryDate:String,active:{type:Boolean,default:true}},{timestamps:true});
+module.exports=mongoose.model("Notice",schema);
