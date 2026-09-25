@@ -40,8 +40,12 @@ async function seedAdmin(){
   await mongoose.disconnect();
 }
 
+module.exports=seedAdmin;
+
+if(require.main===module){
 seedAdmin().catch(async error=>{
   console.error("Admin setup failed:",error.message);
   try{await mongoose.disconnect();}catch{}
   process.exit(1);
 });
+}
