@@ -11,18 +11,18 @@ router.post("/login", async (req, res) => {
     try {
         const mode = String(req.body.mode || "password");
         const email = String(req.body.email || "").trim().toLowerCase();
-        if (mode === "student") {
-            const password = String(req.body.password || "");
-            if (!email || !password) {
-                return res.status(400).json({ message: "Registered Gmail and password are required" });
-            }
+        const password = String(req.body.password || "");
 
-            // Student login uses only registered Gmail + password.
-            // For accounts created without a custom password, the roll number is the default password.
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
+
+        if (mode === "student") {
             let user = await User.findOne({ email, role: "student" }).populate("student");
 
             if (!user) {
                 const student = await Student.findOne({ email });
+
                 if (!student) {
                     return res.status(401).json({ message: "Student account not found for this Gmail" });
                 }
@@ -40,9 +40,16 @@ router.post("/login", async (req, res) => {
                 return res.status(401).json({ message: "Invalid student password" });
             }
 
-            const studentId = user.student?._id ? user.student._id.toString() : user.student?.toString();
+            const studentId = user.student?._id
+                ? user.student._id.toString()
+                : user.student?.toString() || null;
+
             const token = jwt.sign(
-                { id: user._id.toString(), role: "student", studentId: studentId || null },
+                {
+                    id: user._id.toString(),
+                    role: "student",
+                    studentId
+                },
                 JWT_SECRET,
                 { expiresIn: "8h" }
             );
@@ -54,71 +61,58 @@ router.post("/login", async (req, res) => {
                     name: user.name,
                     email: user.email,
                     role: "student",
-                    studentId: studentId || null
+                    studentId
                 }
             });
         }
 
-        const password = String(req.body.password || "");
-            if (!email || !rollNumber || !password) return res.status(400).json({ message: "Registered Gmail, roll number and password are required" });
-            const student = await Student.findOne({ email, rollNumber });
-            if (!student) return res.status(401).json({ message: "Invalid registered Gmail or roll number" });
-            let user = await User.findOne({ student: student._id, role: "student" });
-
-            // Older students may have been created before student User accounts were added.
-            // Create/link the login account automatically so they can still use Gmail + roll number.
-            if (!user) {
-                user = await User.findOne({ email, role: "student" });
-                if (user) {
-                    user.student = student._id;
-                    user.name = student.name;
-                    await user.save();
-                } else {
-                    user = await User.create({
-                        name: student.name,
-                        email: student.email,
-                        passwordHash: await bcrypt.hash(rollNumber, 10),
-                        role: "student",
-                        student: student._id
-                    });
-                }
-            }
-
-            if (!(await bcrypt.compare(password, user.passwordHash))) {
-                return res.status(401).json({ message: "Invalid student password" });
-            }
-
-            const token = jwt.sign({ id: user._id.toString(), role: "student", studentId: student._id.toString() }, JWT_SECRET, { expiresIn: "8h" });
-            return res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: "student", studentId: student._id } });
-        }
-        const password = String(req.body.password || "");
-
-        if (!email || !password) return res.status(400).json({ message: "Email and password are required" });
-
         const user = await User.findOne({ email });
+
         if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
         const token = jwt.sign(
-            { id: user._id.toString(), role: user.role, studentId: user.student ? user.student.toString() : null },
+            {
+                id: user._id.toString(),
+                role: user.role,
+                studentId: user.student ? user.student.toString() : null
+            },
             JWT_SECRET,
             { expiresIn: "8h" }
         );
 
-        res.json({
+        return res.json({
             token,
-            user: { id: user._id, name: user.name, email: user.email, role: user.role, studentId: user.student }
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                studentId: user.student
+            }
         });
     } catch (error) {
-        res.status(500).json({ message: "Login failed", error: error.message });
+        console.error("Login error:", error);
+        return res.status(500).json({
+            message: "Login failed",
+            error: error.message
+        });
     }
 });
 
 router.get("/me", authenticate, async (req, res) => {
-    const user = await User.findById(req.user.id).select("-passwordHash");
-    if (!user) return res.status(404).json({ message: "User not found" });
-    res.json(user);
+    try {
+        const user = await User.findById(req.user.id).select("-passwordHash");
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Unable to fetch user", error: error.message });
+    }
 });
 
 module.exports = router;
