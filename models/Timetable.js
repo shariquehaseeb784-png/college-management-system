@@ -1,0 +1,3 @@
+const mongoose=require("mongoose");
+const schema=new mongoose.Schema({day:{type:String,enum:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],required:true},startTime:{type:String,required:true},endTime:{type:String,required:true},subject:{type:mongoose.Schema.Types.ObjectId,ref:"Subject",required:true},faculty:{type:mongoose.Schema.Types.ObjectId,ref:"Faculty"},room:String,course:String,semester:Number},{timestamps:true});
+module.exports=mongoose.model("Timetable",schema);
