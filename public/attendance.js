@@ -2,6 +2,19 @@ const studentSelect=document.getElementById("student"),attendanceForm=document.g
 async function loadStudents(){const r=await adminFetch("/api/students");const students=await r.json();studentSelect.innerHTML='<option value="">Select Student</option>'+students.map(s=>`<option value="${s._id}">${s.name} - ${s.rollNumber}</option>`).join("");}
 async function loadAttendance(){const r=await adminFetch("/api/attendance");const records=await r.json();attendanceList.innerHTML=records.map(x=>`<tr><td>${x.student?.name||"-"}</td><td>${x.student?.rollNumber||"-"}</td><td>${x.date}</td><td>${x.status}</td><td><button class="delete-btn" onclick="deleteAttendance('${x._id}')">Delete</button></td></tr>`).join("");calculateAttendance(records);}
 function calculateAttendance(records){if(!records.length){attendanceSummary.innerHTML="<p>No attendance records available.</p>";return;}const groups={};records.forEach(r=>{const id=r.student?._id;if(!id)return;if(!groups[id])groups[id]={name:r.student.name,roll:r.student.rollNumber,total:0,present:0};groups[id].total++;if(r.status==="Present")groups[id].present++;});attendanceSummary.innerHTML=Object.values(groups).map(s=>`<div class="attendance-summary-item"><h3>${s.name}</h3><p>Roll Number: ${s.roll}</p><p>Present: ${s.present}/${s.total}</p><strong>${((s.present/s.total)*100).toFixed(2)}%</strong></div>`).join("");}
-attendanceForm.addEventListener("submit",async e=>{e.preventDefault();const body={student:studentSelect.value,date:date.value,status:status.value};const r=await adminFetch("/api/attendance",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});const d=await r.json();if(r.ok){alert("Attendance marked successfully!");attendanceForm.reset();loadAttendance();}else alert(d.message||"Something went wrong");});
+attendanceForm.addEventListener("submit",async e=>{e.preventDefault();
+const dateInput=document.getElementById("date");
+const statusInput=document.getElementById("status");
+const body={student:studentSelect.value,date:dateInput.value,status:statusInput.value};
+if(!body.student||!body.date||!body.status){alert("Please select student, date and attendance status.");return;}
+try{
+ const r=await adminFetch("/api/attendance",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+ const d=await r.json();
+ if(!r.ok) throw new Error(d.error||d.message||"Something went wrong");
+ alert("Attendance marked successfully!");
+ attendanceForm.reset();
+ await loadAttendance();
+}catch(error){alert("Attendance error: "+error.message);}
+});
 async function deleteAttendance(id){if(!confirm("Delete this attendance?"))return;await adminFetch("/api/attendance/"+id,{method:"DELETE"});loadAttendance();}
 loadStudents();loadAttendance();
