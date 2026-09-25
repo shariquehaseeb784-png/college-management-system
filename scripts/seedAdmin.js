@@ -12,16 +12,12 @@ async function seedAdmin(){
 
   const existing=await User.findOne({email});
   if(existing){
-    if(existing.role!=="admin"){
-      existing.role="admin";
-      existing.name=name;
-      existing.passwordHash=await bcrypt.hash(password,10);
-      existing.student=null;
-      await existing.save();
-      console.log("Existing account promoted to admin:",email);
-    }else{
-      console.log("Admin already exists:",email);
-    }
+    existing.role="admin";
+    existing.name=name;
+    existing.passwordHash=await bcrypt.hash(password,10);
+    existing.student=null;
+    await existing.save();
+    console.log("Admin credentials synchronized:",email);
   }else{
     await User.create({
       name,
