@@ -8,6 +8,7 @@ const studentRoutes=require("./routes/studentRoutes");
 const attendanceRoutes=require("./routes/attendanceRoutes");
 const marksRoutes=require("./routes/marksRoutes");
 const studentPortalRoutes=require("./routes/studentPortalRoutes");
+const seedAdmin=require("./scripts/seedAdmin");
 
 const app=express();
 app.use(cors());
@@ -22,7 +23,8 @@ app.use("/api/attendance",attendanceRoutes);
 app.use("/api/marks",marksRoutes);
 app.use("/api/student-portal",studentPortalRoutes);
 
-mongoose.connect(process.env.MONGODB_URI).then(()=>{
+mongoose.connect(process.env.MONGODB_URI).then(async()=>{
+ await seedAdmin();
  const PORT=process.env.PORT||5000;
  app.listen(PORT,()=>console.log(`Server running at http://localhost:${PORT}`));
 }).catch(error=>console.error("MongoDB connection failed:",error.message));
