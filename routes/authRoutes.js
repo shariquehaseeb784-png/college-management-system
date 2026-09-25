@@ -13,7 +13,8 @@ router.post("/login", async (req, res) => {
         const email = String(req.body.email || "").trim().toLowerCase();
         if (mode === "student") {
             const rollNumber = String(req.body.rollNumber || "").trim();
-            if (!email || !rollNumber) return res.status(400).json({ message: "Registered Gmail and roll number are required" });
+            const password = String(req.body.password || "");
+            if (!email || !rollNumber || !password) return res.status(400).json({ message: "Registered Gmail, roll number and password are required" });
             const student = await Student.findOne({ email, rollNumber });
             if (!student) return res.status(401).json({ message: "Invalid registered Gmail or roll number" });
             let user = await User.findOne({ student: student._id, role: "student" });
@@ -35,6 +36,10 @@ router.post("/login", async (req, res) => {
                         student: student._id
                     });
                 }
+            }
+
+            if (!(await bcrypt.compare(password, user.passwordHash))) {
+                return res.status(401).json({ message: "Invalid student password" });
             }
 
             const token = jwt.sign({ id: user._id.toString(), role: "student", studentId: student._id.toString() }, JWT_SECRET, { expiresIn: "8h" });
