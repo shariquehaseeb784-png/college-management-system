@@ -12,8 +12,54 @@ router.post("/login", async (req, res) => {
         const mode = String(req.body.mode || "password");
         const email = String(req.body.email || "").trim().toLowerCase();
         if (mode === "student") {
-            const rollNumber = String(req.body.rollNumber || "").trim();
             const password = String(req.body.password || "");
+            if (!email || !password) {
+                return res.status(400).json({ message: "Registered Gmail and password are required" });
+            }
+
+            // Student login uses only registered Gmail + password.
+            // For accounts created without a custom password, the roll number is the default password.
+            let user = await User.findOne({ email, role: "student" }).populate("student");
+
+            if (!user) {
+                const student = await Student.findOne({ email });
+                if (!student) {
+                    return res.status(401).json({ message: "Student account not found for this Gmail" });
+                }
+
+                user = await User.create({
+                    name: student.name,
+                    email: student.email,
+                    passwordHash: await bcrypt.hash(student.rollNumber, 10),
+                    role: "student",
+                    student: student._id
+                });
+            }
+
+            if (!(await bcrypt.compare(password, user.passwordHash))) {
+                return res.status(401).json({ message: "Invalid student password" });
+            }
+
+            const studentId = user.student?._id ? user.student._id.toString() : user.student?.toString();
+            const token = jwt.sign(
+                { id: user._id.toString(), role: "student", studentId: studentId || null },
+                JWT_SECRET,
+                { expiresIn: "8h" }
+            );
+
+            return res.json({
+                token,
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    role: "student",
+                    studentId: studentId || null
+                }
+            });
+        }
+
+        const password = String(req.body.password || "");
             if (!email || !rollNumber || !password) return res.status(400).json({ message: "Registered Gmail, roll number and password are required" });
             const student = await Student.findOne({ email, rollNumber });
             if (!student) return res.status(401).json({ message: "Invalid registered Gmail or roll number" });
