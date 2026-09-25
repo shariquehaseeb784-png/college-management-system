@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="main-nav">
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="index.html">👨‍🎓 Students</a>
+    <a href="attendance.html">📅 Attendance</a>
+    <a href="marks.html">📝 Marks</a>
+    <a href="result.html">📊 Results</a>
+</nav>
+
+    <div class="container">
+
+        <h1>College Management System</h1>
+
+        <div class="card">
+            <h2>Add Student</h2>
+
+            <form id="studentForm">
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Student Name"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="rollNumber"
+                    placeholder="Roll Number"
+                    required
+                >
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="course"
+                    placeholder="Course (e.g. BCA)"
+                    required
+                >
+
+                <input
+                    type="number"
+                    id="semester"
+                    placeholder="Semester"
+                    min="1"
+                    max="8"
+                    required
+                >
+
+                <button type="submit">Add Student</button>
+
+            </form>
+        </div>
+
+        <div class="card">
+
+            <h2>Student List</h2>
+            <input
+    type="text"
+    id="searchStudent"
+    placeholder="🔍 Search student by name or roll number..."
+>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Roll Number</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Semester</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentList"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

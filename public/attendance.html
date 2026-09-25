@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Management</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="main-nav">
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="index.html">👨‍🎓 Students</a>
+    <a href="attendance.html">📅 Attendance</a>
+    <a href="marks.html">📝 Marks</a>
+    <a href="result.html">📊 Results</a>
+</nav>
+
+    <div class="container">
+
+        <h1>Attendance Management</h1>
+
+        <div class="card">
+            <div class="attendance-summary-card">
+
+    <h2>Attendance Summary</h2>
+
+    <div id="attendanceSummary">
+        Loading...
+    </div>
+
+</div>
+
+            <h2>Mark Attendance</h2>
+
+            <form id="attendanceForm">
+
+                <select id="student" required>
+                    <option value="">Select Student</option>
+                </select>
+
+                <input
+                    type="date"
+                    id="date"
+                    required
+                >
+
+                <select id="status" required>
+
+                    <option value="">
+                        Select Status
+                    </option>
+
+                    <option value="Present">
+                        Present
+                    </option>
+
+                    <option value="Absent">
+                        Absent
+                    </option>
+
+                </select>
+
+                <button type="submit">
+                    Mark Attendance
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>Attendance Records</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Student</th>
+                        <th>Roll Number</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="attendanceList"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="attendance.js"></script>
+
+</body>
+
+</html>

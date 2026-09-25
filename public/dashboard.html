@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - College Management System</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">🎓</div>
+            <div>
+                <h2>CMS</h2>
+                <span>College Management</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <a href="dashboard.html" class="active">
+                🏠 Dashboard
+            </a>
+
+            <a href="index.html">
+                👨‍🎓 Students
+            </a>
+
+            <a href="attendance.html">
+                📅 Attendance
+            </a>
+
+            <a href="marks.html">
+                📝 Marks
+            </a>
+
+            <a href="result.html">
+                📊 Results
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+                <p>College Management System Overview</p>
+            </div>
+
+            <button class="refresh-btn" onclick="loadDashboard()">
+                🔄 Refresh
+            </button>
+
+        </header>
+
+
+        <!-- Welcome -->
+        <section class="welcome">
+
+            <div>
+                <h2>Welcome to College Management System 👋</h2>
+
+                <p>
+                    Manage students, attendance, marks and results
+                    from one place.
+                </p>
+            </div>
+
+            <div class="welcome-icon">
+                🎓
+            </div>
+
+        </section>
+
+
+        <!-- Statistics -->
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon student-icon">
+                    👨‍🎓
+                </div>
+
+                <div>
+                    <p>Total Students</p>
+                    <h2 id="totalStudents">0</h2>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon attendance-icon">
+                    📅
+                </div>
+
+                <div>
+                    <p>Attendance Records</p>
+                    <h2 id="totalAttendance">0</h2>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon marks-icon">
+                    📝
+                </div>
+
+                <div>
+                    <p>Marks Records</p>
+                    <h2 id="totalMarks">0</h2>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon present-icon">
+                    ✅
+                </div>
+
+                <div>
+                    <p>Present</p>
+                    <h2 id="presentCount">0</h2>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Lower Section -->
+        <section class="content-grid">
+
+
+            <!-- Attendance Summary -->
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>Attendance Overview</h2>
+                        <p>Current attendance records</p>
+                    </div>
+
+                </div>
+
+                <div class="attendance-summary">
+
+                    <div class="attendance-box present-box">
+
+                        <span>Present</span>
+
+                        <strong id="presentBox">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="attendance-box absent-box">
+
+                        <span>Absent</span>
+
+                        <strong id="absentBox">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Quick Actions -->
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>Frequently used modules</p>
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <a href="index.html" class="action-card">
+                        <span>👨‍🎓</span>
+                        <div>
+                            <strong>Add Student</strong>
+                            <small>Manage students</small>
+                        </div>
+                    </a>
+
+
+                    <a href="attendance.html" class="action-card">
+                        <span>📅</span>
+                        <div>
+                            <strong>Attendance</strong>
+                            <small>Mark attendance</small>
+                        </div>
+                    </a>
+
+
+                    <a href="marks.html" class="action-card">
+                        <span>📝</span>
+                        <div>
+                            <strong>Add Marks</strong>
+                            <small>Enter student marks</small>
+                        </div>
+                    </a>
+
+
+                    <a href="result.html" class="action-card">
+                        <span>📊</span>
+                        <div>
+                            <strong>View Results</strong>
+                            <small>Check student results</small>
+                        </div>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Footer -->
+        <footer>
+
+            <p>
+                College Management System • Mini Project
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <script src="dashboard.js"></script>
+
+</body>
+
+</html>

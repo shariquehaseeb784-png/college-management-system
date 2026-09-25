@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Result</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="main-nav">
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="index.html">👨‍🎓 Students</a>
+    <a href="attendance.html">📅 Attendance</a>
+    <a href="marks.html">📝 Marks</a>
+    <a href="result.html">📊 Results</a>
+</nav>
+
+    <div class="container">
+
+        <h1>Student Result</h1>
+
+        <div class="card">
+
+            <h2>Select Student</h2>
+
+            <select id="student" required>
+                <option value="">Select Student</option>
+            </select>
+
+            <button onclick="showResult()">
+                View Result
+            </button>
+
+        </div>
+
+
+        <div class="card" id="resultCard" style="display: none;">
+
+            <h2>Result Summary</h2>
+
+            <p>
+                <strong>Student:</strong>
+                <span id="studentName"></span>
+            </p>
+
+            <p>
+                <strong>Roll Number:</strong>
+                <span id="rollNumber"></span>
+            </p>
+
+            <br>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+
+                <tbody id="resultList"></tbody>
+
+            </table>
+
+            <br>
+
+            <h3>
+                Total Marks:
+                <span id="totalMarks"></span>
+            </h3>
+
+            <h3>
+                Percentage:
+                <span id="percentage"></span>%
+            </h3>
+
+            <h3>
+                Grade:
+                <span id="grade"></span>
+            </h3>
+
+            <h3>
+                Result:
+                <span id="result"></span>
+            </h3>
+
+        </div>
+
+    </div>
+
+
+    <script src="result.js"></script>
+
+</body>
+</html>
