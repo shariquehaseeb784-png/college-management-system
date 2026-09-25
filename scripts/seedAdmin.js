@@ -8,11 +8,7 @@ async function seedAdmin(){
   const password=process.env.ADMIN_PASSWORD||"Admin@12345";
   const name=process.env.ADMIN_NAME||"College Admin";
 
-  if(!process.env.MONGODB_URI){
-    throw new Error("MONGODB_URI is required");
-  }
-
-  await mongoose.connect(process.env.MONGODB_URI);
+  if(!process.env.MONGODB_URI) throw new Error("MONGODB_URI is required");
 
   const existing=await User.findOne({email});
   if(existing){
@@ -36,16 +32,17 @@ async function seedAdmin(){
     });
     console.log("Admin created:",email);
   }
-
-  await mongoose.disconnect();
 }
 
 module.exports=seedAdmin;
 
 if(require.main===module){
-seedAdmin().catch(async error=>{
-  console.error("Admin setup failed:",error.message);
-  try{await mongoose.disconnect();}catch{}
-  process.exit(1);
-});
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(seedAdmin)
+    .then(()=>mongoose.disconnect())
+    .catch(async error=>{
+      console.error("Admin setup failed:",error.message);
+      try{await mongoose.disconnect();}catch{}
+      process.exit(1);
+    });
 }
