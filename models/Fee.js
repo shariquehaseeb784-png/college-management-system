@@ -1,0 +1,3 @@
+const mongoose=require("mongoose");
+const schema=new mongoose.Schema({student:{type:mongoose.Schema.Types.ObjectId,ref:"Student",required:true},title:{type:String,required:true},amount:{type:Number,required:true,min:0},paid:{type:Number,default:0,min:0},dueDate:String,status:{type:String,enum:["Pending","Partial","Paid"],default:"Pending"},paymentDate:String,transactionId:String},{timestamps:true});
+module.exports=mongoose.model("Fee",schema);
