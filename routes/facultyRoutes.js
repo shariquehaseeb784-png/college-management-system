@@ -1,0 +1,5 @@
+const express=require("express");const Faculty=require("../models/Faculty");const {authenticate,authorize}=require("../middleware/auth");const router=express.Router();router.use(authenticate,authorize("admin"));
+router.get("/",async(req,res)=>{try{res.json(await Faculty.find().populate("department","name code").sort({createdAt:-1}));}catch(e){res.status(500).json({message:e.message});}});
+router.post("/",async(req,res)=>{try{res.status(201).json(await Faculty.create(req.body));}catch(e){res.status(400).json({message:e.message});}});
+router.put("/:id",async(req,res)=>{try{const x=await Faculty.findByIdAndUpdate(req.params.id,req.body,{new:true,runValidators:true});if(!x)return res.status(404).json({message:"Faculty not found"});res.json(x);}catch(e){res.status(400).json({message:e.message});}});
+router.delete("/:id",async(req,res)=>{await Faculty.findByIdAndDelete(req.params.id);res.json({message:"Faculty deleted"});});module.exports=router;
